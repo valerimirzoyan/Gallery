@@ -1,0 +1,38 @@
+
+.footer {
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.footerInfo p {
+    margin-top: 50px;
+    color: white;
+}
+
+.svgContainer {
+    display: flex;
+    justify-content: space-evenly ;
+    width: 70%;
+    box-sizing: content-box;
+}
+.svgContainer svg {
+    width: 80px;
+    height: 80px;
+    fill: white;
+    transition: fill 0.3s ease;
+    cursor: pointer;
+    padding: 30px;
+}
+
+.svgContainer svg:nth-child(2):hover {
+    fill: #4576ED; /* LinkedIn blue */
+}
+
+.svgContainer svg:nth-child(3):hover {
+    fill: #CE1312; /* YouTube red */
+}
+
+.svgContainer svg:nth-child(4):hover {
+    fill: #1D9BF0; /* Twitter blue */
+}

@@ -1,0 +1,90 @@
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: black;
+    overflow: hidden;
+  }
+  
+  /* .container {
+    text-align: center;
+    padding: 30px;
+    
+  } */
+  
+  .title {
+    color: #ddd;
+    margin-bottom: 30px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  
+  .loader {
+    width: 12em;
+    height: 12em;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  }
+  
+  .loader path {
+    stroke: #ffffff;
+    stroke-width: 0.6px;
+    animation: dashArray 4s ease-in-out infinite, dashOffset 4s linear infinite;
+  }
+  
+  @keyframes dashArray {
+    0% {
+      stroke-dasharray: 0 1 359 0;
+    }
+    50% {
+      stroke-dasharray: 0 359 1 0;
+    }
+    100% {
+      stroke-dasharray: 359 1 0 0;
+    }
+  }
+  
+  @keyframes dashOffset {
+    0% {
+      stroke-dashoffset: 365;
+    }
+    100% {
+      stroke-dashoffset: 5;
+    }
+  }
+
+.backgroundImage {
+    position: absolute;
+    height: 140dvh;
+    width: 100%;
+}
+.backgroundImage img {
+    object-fit: cover;
+}
+
+.introContainer {
+    margin-top: 35dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@import url('https://fonts.google.com/specimen/Montserrat?lang=en_Latn&categoryFilters=Sans+Serif:%2FSans%2FGeometric');
+
+.introContainer h1 {
+    z-index: 1;
+    color: white;
+    font-family: "Montserrat", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 6vw;
+    /* text-transform: uppercase; */
+}
+
+.introImage {
+    position: absolute;
+    width: 350px;
+    height: 475px;
+    filter:brightness(70%);
+}
