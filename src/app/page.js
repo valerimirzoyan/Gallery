@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import Intro from "@/components/Intro/Intro";
 import Description from "@/components/Description/Desctiption";
@@ -13,8 +13,20 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Home() {
     const containerRef = useRef(null);
+    const [isPageReady, setIsPageReady] = useState(false);
 
     useEffect(() => {
+        
+        const timer = setTimeout(() => {
+            setIsPageReady(true);
+        }, 3700);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        if (!isPageReady) return;
+
         let locomotiveScroll;
 
         const init = async () => {
@@ -32,7 +44,7 @@ export default function Home() {
                 tablet: {
                     smooth: true,
                 },
-                // For v5+
+                
                 scroll: (instance) => {
                     ScrollTrigger.update();
                 },
@@ -64,7 +76,6 @@ export default function Home() {
             ScrollTrigger.addEventListener("refresh", lsUpdate);
             ScrollTrigger.refresh();
 
-            // New useEffect to handle updates
             const timeout = setTimeout(() => {
                 lsUpdate();
             }, 500);
@@ -79,7 +90,7 @@ export default function Home() {
         };
 
         init();
-    }, []);
+    }, [isPageReady]);
 
     return (
         <main

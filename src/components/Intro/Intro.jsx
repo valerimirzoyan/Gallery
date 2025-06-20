@@ -3,21 +3,25 @@ import Image from 'next/image';
 import styles from "./styles.module.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect,useRef} from "react";
+import { useLayoutEffect, useRef} from "react";
 import { useState, useEffect} from 'react';
 
 const Intro = () => {
     const [isLoading, setIsLoading] = useState(true);
-    const backgroundImage =useRef(null);
-    const introImage =useRef(null);
+    const [shouldInitScroll, setShouldInitScroll] = useState(false);
+    const backgroundImage = useRef(null);
+    const introImage = useRef(null);
 
     useLayoutEffect(() => {
+        
+        if (!shouldInitScroll) return;
+
         gsap.registerPlugin(ScrollTrigger);
 
         const timeline = gsap.timeline({
             scrollTrigger: {
                 trigger: document.documentElement,
-                start:0,
+                start: 0,
                 end: "+=500px",
                 scrub: true,
             }
@@ -25,16 +29,20 @@ const Intro = () => {
         timeline
             .from(backgroundImage.current, {clipPath:"inset(15%)"})
             .to(introImage.current, {height: "200px"})
-    },[]);
+    }, [shouldInitScroll]);
 
     useEffect(() => {
-       
-            document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+        setIsLoading(true);
         
         const timer = setTimeout(() => {
             setIsLoading(false);
             document.body.style.overflow = "";
-        });
+            
+            setTimeout(() => {
+                setShouldInitScroll(true);
+            }, 100);
+        }, 3500);
     
         return () => {
             clearTimeout(timer);
@@ -42,9 +50,8 @@ const Intro = () => {
         };
     }, []);
 
-
     return (
-        <div  className={styles.intro}>
+        <div className={styles.intro}>
             {isLoading && (
                 <div className={styles.loaderContainer}>
                     <div className={styles.container}>
@@ -67,10 +74,9 @@ const Intro = () => {
                         <path pathLength="360" d="M 30.2223 21.2875 C 30.5674 21.2875 30.8471 21.0195 30.8471 20.6889 V 18.92 L 31.9916 18.9675 C 32.3376 18.9833 32.628 18.7259 32.643 18.3956 C 32.658 18.0654 32.3907 17.786 32.0459 17.7717 L 30.2495 17.6969 C 30.077 17.6889 29.9133 17.7497 29.7902 17.8624 C 29.6671 17.9753 29.5976 18.1315 29.5976 18.2948 V 20.6889 C 29.5974 21.0195 29.8772 21.2875 30.2223 21.2875 Z"></path>
                         </svg>
                     </div>
-
                 </div>
             )}
-            <div ref={backgroundImage}  className={styles.backgroundImage}>
+            <div ref={backgroundImage} className={styles.backgroundImage}>
                 <Image
                     src={'/images/bg.png'}
                     fill
@@ -80,8 +86,8 @@ const Intro = () => {
             <div className={styles.introContainer}>
                 <div ref={introImage}
                      data-scroll
-                    data-scroll-speed="0.8"  // Parallax strength, increase to exaggerate
-                    className={styles.introImage}
+                     data-scroll-speed="0.8"
+                     className={styles.introImage}
                 >
                     <Image
                         src={'/images/Black_Square.jpg'}
@@ -89,7 +95,7 @@ const Intro = () => {
                         alt="foreground parallax image"
                     />
                 </div>
-                <h1 data-scroll data-scroll-speed="0.4" >ANIMATED GALLERY</h1>
+                <h1 data-scroll data-scroll-speed="0.4">ANIMATED GALLERY</h1>
             </div>
         </div>
     );
