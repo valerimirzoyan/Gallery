@@ -12,98 +12,94 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function Home() {
-    const containerRef = useRef(null);
-    const [isPageReady, setIsPageReady] = useState(false);
+  const containerRef = useRef(null);
+  const [isPageReady, setIsPageReady] = useState(false);
 
-    useEffect(() => {
-        
-        const timer = setTimeout(() => {
-            setIsPageReady(true);
-        }, 3700);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageReady(true);
+    }, 3700);
 
-        return () => clearTimeout(timer);
-    }, []);
+    return () => clearTimeout(timer);
+  }, []);
 
-    useEffect(() => {
-        if (!isPageReady) return;
+  useEffect(() => {
+    if (!isPageReady) return;
 
-        let locomotiveScroll;
+    let locomotiveScroll;
 
-        const init = async () => {
-            gsap.registerPlugin(ScrollTrigger);
+    const init = async () => {
+      gsap.registerPlugin(ScrollTrigger);
 
-            const LocomotiveScroll = (await import("locomotive-scroll")).default;
+      const LocomotiveScroll = (await import("locomotive-scroll")).default;
 
-            locomotiveScroll = new LocomotiveScroll({
-                el: containerRef.current,
-                smooth: true,
-                multiplier: 1.5,
-                smartphone: {
-                    smooth: true,
-                },
-                tablet: {
-                    smooth: true,
-                },
-                
-                scroll: (instance) => {
-                    ScrollTrigger.update();
-                },
-            });
+      locomotiveScroll = new LocomotiveScroll({
+        el: containerRef.current,
+        smooth: true,
+        multiplier: 1.5,
+        smartphone: {
+          smooth: true,
+        },
+        tablet: {
+          smooth: true,
+        },
 
-            ScrollTrigger.scrollerProxy(containerRef.current, {
-                scrollTop(value) {
-                    return arguments.length
-                        ? locomotiveScroll.scrollTo(value, 0, 0)
-                        : locomotiveScroll.scroll.instance.scroll.y;
-                },
-                getBoundingClientRect() {
-                    return {
-                        top: 0,
-                        left: 0,
-                        width: window.innerWidth,
-                        height: window.innerHeight,
-                    };
-                },
-                pinType: containerRef.current.style.transform ? "transform" : "fixed",
-            });
+        scroll: (instance) => {
+          ScrollTrigger.update();
+        },
+      });
 
-            const lsUpdate = () => {
-                if (locomotiveScroll) {
-                    locomotiveScroll.update();
-                }
-            };
+      ScrollTrigger.scrollerProxy(containerRef.current, {
+        scrollTop(value) {
+          return arguments.length
+            ? locomotiveScroll.scrollTo(value, 0, 0)
+            : locomotiveScroll.scroll.instance.scroll.y;
+        },
+        getBoundingClientRect() {
+          return {
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+          };
+        },
+        pinType: containerRef.current.style.transform ? "transform" : "fixed",
+      });
 
-            ScrollTrigger.addEventListener("refresh", lsUpdate);
-            ScrollTrigger.refresh();
+      // const lsUpdate = () => {
+      //     if (locomotiveScroll) {
+      //         locomotiveScroll.update();
+      //     }
+      // };
 
-            const timeout = setTimeout(() => {
-                lsUpdate();
-            }, 500);
+      ScrollTrigger.addEventListener("refresh", lsUpdate);
+      ScrollTrigger.refresh();
 
-            return () => {
-                clearTimeout(timeout);
-                if (locomotiveScroll) {
-                    ScrollTrigger.removeEventListener("refresh", lsUpdate);
-                    locomotiveScroll.destroy();
-                }
-            };
-        };
+      const timeout = setTimeout(() => {
+        lsUpdate();
+      }, 500);
 
-        init();
-    }, [isPageReady]);
+      return () => {
+        clearTimeout(timeout);
+        if (locomotiveScroll) {
+          ScrollTrigger.removeEventListener("refresh", lsUpdate);
+          locomotiveScroll.destroy();
+        }
+      };
+    };
 
-    return (
-        <main
-            ref={containerRef}
-            className={styles.main}
-        >
-            <Intro />
-            <Description />
-            <Projects />
-            <Gallery />
-            <Zoom />
-            <FinalSection />
-            <Footer />
-        </main>
-    );
+    init();
+  }, [isPageReady]);
+
+  return (
+    <main ref={containerRef} className={styles.main}>
+      <Intro />
+      <Description />
+      <Projects />
+      <Gallery />
+      <Zoom />
+      <FinalSection />
+      <Footer />
+    </main>
+  );
 }
